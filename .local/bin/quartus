@@ -1,0 +1,6 @@
+#!/bin/bash
+
+dir="/home/teencorn/Notes/School/Current/CSCI113/intelFPGA_lite/17.1/quartus/bin"
+
+cd $dir
+./quartus &

@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Root folder name ( project name )
+ROOT=$(pwd | awk -F / '{print $NF}')
+CWD=$(pwd)
+
+mkdir src build include
+
+# Root CMakeList file
+touch CMakeLists.txt
+echo "cmake_minimum_required( VERSION 3.5 )
+project($ROOT)
+set( ${ROOT}_VERSION_MAJOR 0 )
+set( ${ROOT}_VERSION_MINOR 1 )
+
+set( CMAKE_CXX_FLAGS "\${CMAKE_CXX_FLAGS} -std=c++11 -g3 -Wall -Wextra" )
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+file ( GLOB ${ROOT}_SRC \${CMAKE_SOURCE_DIR}/src/*.cpp )
+
+include_directories( \${CMAKE_SOURCE_DIR}/include )
+
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY \${CMAKE_BINARY_DIR}/bin )
+
+add_executable( a.out \${${ROOT}_SRC} )" > CMakeLists.txt
+
+# Create basic main
+touch main.cpp
+echo "#include <iostream>
+
+int main()
+{
+	std::cout << \"${ROOT} Project has been created!\\n\";
+
+	return 0;
+}" > main.cpp
+
+# Create gdb debug command file
+touch ~/.gdbcmdfile
+echo "target remote localhost:12345
+b main
+c" > ~/.gdbcmdfile
+
+cd $CWD/build
+cmake .. && make
+clear
+./bin/a.out
+read -n 1

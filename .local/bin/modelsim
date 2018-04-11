@@ -1,0 +1,6 @@
+#!/bin/bash
+
+dir='/home/teencorn/notes/school/curr/csci/intelFPGA_lite/17.1/modelsim_ase/bin'
+
+cd $dir
+termite --name=dummy -e ./vsim
